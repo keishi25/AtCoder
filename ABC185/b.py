@@ -1,22 +1,28 @@
-N, M, T = list(map(int, input().split()))
-out = []
-for i in range(M):
-    a, b = list(map(int, input().split()))
-    out.append([a, b])
-
+"""
+https://atcoder.jp/contests/abc185/tasks/abc185_b
+"""
 import sys
-tmp1 = N
-tmp2 = 0
-for i in out:
-    if tmp1 - (i[0] - tmp2) < 0:
-        print(tmp1)
-        print(i[0])
-        print(tmp2)
-        print(tmp1 - (i[0] - tmp2))
-        print('No')
-        sys.exit()
-    tmp1 = tmp1 - (i[0] - tmp2) + (i[1] - i[0])
-    tmp2 = i[0]
-    print("aa")
 
-print('Yes')
+n, m, t = list(map(int, input().split()))
+tmp = n
+leave = 0
+
+for i in range(m):
+    a, b = map(int, input().split())
+    tmp -= (a - leave)
+    if tmp <= 0:
+        print("No")
+        sys.exit()
+    else:
+        leave = b
+        tmp += (b - a)
+        if tmp > n:
+            tmp = n
+
+tmp -= (t - leave)
+if tmp <= 0:
+    print("No")
+else:
+    print("Yes")
+
+
