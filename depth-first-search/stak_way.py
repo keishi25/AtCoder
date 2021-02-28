@@ -6,37 +6,41 @@
 特徴
 ・探索済みは、visitedで管理を行う
 ・範囲と条件で移動可能名場合は、その場所をstackに格納して、探索を行う
+・stackに候補がある限り探索を行う
 
 問題は、ATC001
 https://nashidos.hatenablog.com/entry/2020/01/04/234842
 """
-
 import sys
-h,w = map(int,input().split())
-c = [list(input()) for i in range(h)]
+H, W = list(map(int, input().split()))
+c = [list(input()) for h in range(H)]
+visited = [[0 for w in range(W)] for h in range(H)]
+stack = []
 
-for i in range(h):
-    for j in range(w):
-        if c[i][j] == "s":
-            sx,sy = i,j #スタート
-        elif c[i][j] == "g":
-            gx,gy = i,j #ゴール
-
-stack = [[sx,sy]]
-visited = [[0 for i in range(w)]for j in range(h)]
-visited[sx][sy] = 1
-
-dx_dy = [[1,0],[0,1],[-1,0],[0,-1]]
+for h in range(H):
+    for w in range(W):
+        if c[h][w] == "s":
+            visited[h][w] = 1
+            stack.append([h, w])
 
 while stack:
-    x,y = stack.pop() #要素を取り出す
-    for i in range(4):
-        nx,ny = x+dx_dy[i][0], y+dx_dy[i][1] #現在の位置
-        if 0 <= nx < h and 0 <= ny < w and visited[nx][ny] == 0 and c[nx][ny] != '#':
-            visited[nx][ny] = 1 #訪れた印をつける
-            stack.append([nx,ny]) #スタックに現在位置をpush
-    if visited[gx][gy] == 1:
-        print("Yes")
-        sys.exit()
+    # stack的な取り出し（配列最後の取得）
+    now_pos = stack.pop()
+
+    # 上下左右移動
+    move_list = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+
+    for move in move_list:
+        moved_y = now_pos[0] + move[0]
+        moved_x = now_pos[1] + move[1]
+
+        if 0 <= moved_y < H and 0 <= moved_x < W:
+            if c[moved_y][moved_x] == "g":
+                print("Yes")
+                sys.exit()
+
+            elif c[moved_y][moved_x] == "." and visited[moved_y][moved_x] == 0:
+                stack.append([moved_y, moved_x])
+                visited[moved_y][moved_x] = 1
 
 print("No")
