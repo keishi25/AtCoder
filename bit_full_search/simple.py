@@ -1,4 +1,5 @@
 ll = [2,9,0]
+
 for i in range(8):
     lll = 0
     llll=[]
