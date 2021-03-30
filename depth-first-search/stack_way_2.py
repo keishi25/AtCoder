@@ -13,7 +13,7 @@ for i in range(H):
             stack.append([i, j])
 
 while stack:
-    current_pos = stack.pop(0)
+    current_pos = stack.pop()  # 後方から取得
     moved_pos_list = [
         [current_pos[0] + 1, current_pos[1]],
         [current_pos[0], current_pos[1] + 1],
